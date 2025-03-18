@@ -1,0 +1,64 @@
+import BgGradient from "@/components/common/bg-gradient";
+import SummaryCard from "@/components/summaries/summary-card";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Plus } from "lucide-react";
+import Link from "next/link";
+
+export default function DashboardPage() {
+    const uploadLimit = 5;
+    const summaries = [
+        {
+            id: 1,
+            title: "Sumário 1",
+            description: "Descrição do sumário 1",
+            created_at: "2024-01-01",
+            summary_text: "Texto do sumário 1",
+            status: "completed",
+        },
+    ];
+
+    return (
+        <main className="min-h-screen">
+            <BgGradient className="bg-gradient-to-r from-emerald-200 via-teal-200 to-cyan-200" />
+            <div className="container mx-auto flex flex-col gap-4">
+                <div className="px-2 py-12 sm:py-24">
+                    <div className="flex gap-4 mb-8 justify-between">
+                        <div className="flex flex-col gap-2">
+                            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-gray-600 to-gray-900 text-transparent bg-clip-text">Seus Sumários</h1>
+                            <p className="text-gray-600">Transforme seus PDFs em insights concisos</p>
+                        </div>
+                        <Button
+                            variant="link"
+                            className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white hover:scale-105 transition-all duration-300 group hover:no-underline"
+                        >
+                            <Link href="/upload" className="flex items-center text-white">
+                                <Plus className="w-5 h-5 mr-2" />
+                                Novo Sumário
+                            </Link>
+                        </Button>
+                    </div>
+
+                    <div className="mb-6">
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-800">
+                            <p>
+                                Você atingiu o limite de {uploadLimit} sumários no plano Básico. {" "}
+                                <Link href="/#pricing" className="text-blue-500 hover:text-blue-600 underline font-medium underline-offset-4 inline-flex items-center gap-1">
+                                    Clique aqui para fazer o upgrade para o plano PRO{" "}
+                                    <ArrowRight className="w-4 h-4 inline-block" />
+                                </Link>
+                                para criar sumários ilimitados.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 sm:px-0">
+                        {summaries.map((summary, index) => (
+                            <SummaryCard key={index} summary={summary} />
+                        ))}
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    );
+}

@@ -4,8 +4,9 @@ import UploadFormInput from '@/components/upload/upload-form-input';
 import { useUploadThing } from '../../utils/uploadthing';
 import { z } from 'zod';
 import { toast } from "sonner"
-import { generatePdfSummary } from '@/actions/upload-actions';
+import { generatePdfSummary, storePdfSummaryAction } from '@/actions/upload-actions';
 import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const schema = z.object({
     file: z.instanceof(File, { message: 'Arquivo inválido' })
@@ -15,6 +16,7 @@ const schema = z.object({
 
 export default function UploadForm() {
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const formRef = useRef<HTMLFormElement>(null);
     const { startUpload, routeConfig } = useUploadThing("pdfUploader", {
@@ -68,16 +70,27 @@ export default function UploadForm() {
             const { data = null, message = null } = result || {};
 
             if (data) {
+                let storeResult: any;
                 toast.info("Estamos salvando o seu sumário!... ✨");
                 if (data.summary) {
                     // Salvar no banco de dados
+                    storeResult = await storePdfSummaryAction({
+                        fileUrl: response[0].serverData.file.url,
+                        summary: data.summary,
+                        title: data.title,
+                        fileName: file.name
+                    });
+                    toast.success("✨ Sumário salvo com sucesso!");
+                    formRef.current?.reset();
+                    router.push(`/summaries/${storeResult.data.id}`);
                 }
-                formRef.current?.reset();
             }
         } catch (error) {
             setIsLoading(false);
             console.error('Erro ao enviar o arquivo', error);
             formRef.current?.reset();
+        } finally {
+            setIsLoading(false);
         }
     };
 
