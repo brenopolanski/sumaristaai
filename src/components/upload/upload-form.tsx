@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import { generatePdfSummary, storePdfSummaryAction } from '@/actions/upload-actions';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import LoadingSkeleton from './loading-skeleton';
 
 const schema = z.object({
     file: z.instanceof(File, { message: 'Arquivo inválido' })
@@ -94,13 +95,24 @@ export default function UploadForm() {
         }
     };
 
-    // Sumarizar com IA
-    // Salvar no banco de dados
-    // Redirecionar para a página de visualização do sumário com o ID
-
     return (
-        <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto" >
-            <UploadFormInput isLoading={isLoading} ref={formRef} onSubmit={handleSubmit} />
-        </div >
+        <>
+            <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto" >
+                <UploadFormInput isLoading={isLoading} ref={formRef} onSubmit={handleSubmit} />
+                {isLoading && (
+                    <>
+                        <div className='relative'>
+                            <div className='absolute inset-0 flex items-center justify-center' aria-hidden='true'>
+                                <div className='w-full border-t border-gray-200 dark:border-gray-800'></div>
+                            </div>
+                            <div className='relative flex justify-center mt-4'>
+                                <span className='bg-transparent px-3 py-1.5 text-muted-foreground text-sm'>Processando</span>
+                            </div>
+                        </div>
+                        <LoadingSkeleton />
+                    </>
+                )}
+            </div>
+        </>
     );
 };
