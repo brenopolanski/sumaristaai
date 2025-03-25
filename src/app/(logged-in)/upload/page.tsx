@@ -1,18 +1,38 @@
 import BgGradient from "@/components/common/bg-gradient";
+import { MotionDiv } from "@/components/common/motion-wrapper";
 import UploadForm from "@/components/upload/upload-form";
 import UploadHeader from "@/components/upload/upload-header";
+import { hasReachedUploadLimit } from "@/lib/user";
+import { containerVariants } from "@/utils/constants";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+export default async function UploadPage() {
+    const user = await currentUser();
+    if (!user?.id) {
+        redirect("/sign-in");
+    }
+    const userId = user.id;
 
-export default function UploadPage() {
+    const { hasReachedLimit } = await hasReachedUploadLimit(userId);
+    console.log(hasReachedLimit);
+    if (hasReachedLimit) {
+        redirect("/dashboard");
+    }
+
     return (
         <section className="min-h-screen">
             <BgGradient />
-            <div className="py-12 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8
+            <MotionDiv
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="py-12 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8
             lg:pt-12">
                 <div className="flex flex-col items-center justify-center gap-6 text-center">
                     <UploadHeader />
                     <UploadForm />
                 </div>
-            </div>
+            </MotionDiv>
         </section>
     );
 }

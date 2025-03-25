@@ -1,3 +1,54 @@
 {
     "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.cursorBlinking": "smooth",
+    "editor.fontSize": 14,
+    "editor.lineHeight": 22,
+    "editor.fontLigatures": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "editor.renderWhitespace": "all",
+    "editor.guides.indentation": true,
+    "editor.minimap.enabled": true,
+    "editor.stickyScroll.enabled": true,
+    // === PERFORMANCE ===
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "search.quickOpen.preserveInput": true,
+    "workbench.editor.enablePreview": false,
+    // === LINTING ===
+    "eslint.validate": [
+        "javascript",
+        "typescript",
+        "javascriptreact",
+        "typescriptreact"
+    ],
+    "eslint.alwaysShowStatus": true,
+    "eslint.runtime": "node",
+    // === TERMINAL ===
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.scrollback": 5000,
+    // === GIT ===
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "gitlens.hovers.currentLine.enabled": true,
+    // === DEBUGGING ===
+    "debug.console.fontSize": 14,
+    "debug.toolBarLocation": "docked",
+    // === UI ENHANCEMENTS ===
+    "window.zoomLevel": 1,
+    "breadcrumbs.enabled": true,
+    "workbench.startupEditor": "none",
+    "workbench.colorTheme": "One Dark Pro",
+    "workbench.iconTheme": "material-icon-theme"
 }

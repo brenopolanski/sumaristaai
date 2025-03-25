@@ -25,6 +25,11 @@ export default function SummaryHeader({ title, createdAt, readingTime }: { title
                         {readingTime} minutos de leitura
                     </div>
                 </div>
+                <h1 className="text-2xl font-bold lg:text-4xl lg:tracking-tight">
+                    <span className="bg-gradient-to-r from-blue-600 to-blue-400 text-transparent bg-clip-text">
+                        {title}
+                    </span>
+                </h1>
             </div>
             <div>
                 <Link href="/dashboard">

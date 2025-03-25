@@ -1,8 +1,12 @@
 import { Pizza } from "lucide-react";
-
+import { MotionDiv, MotionH3 } from "../common/motion-wrapper";
+import { SummaryViewer } from "../summaries/summary-viewer";
+import { DEMO_SUMMARY } from "@/utils/demo-summary";
+import BgGradient from "../common/bg-gradient";
 export default function DemoSection() {
     return (
         <section className="relative">
+            <BgGradient />
             <div className="py-12 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8
             lg:pt-12">
                 <div>
@@ -16,18 +20,26 @@ export default function DemoSection() {
                         <Pizza className="w-6 h-6 text-blue-500" />
                     </div>
                     <div className="text-center mb-16">
-                        <h3 className="font-bold text-3xl max-w-2xl mx-auto px-4 sm:px-6">
+                        <MotionH3 whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="font-bold text-3xl max-w-2xl mx-auto px-4 sm:px-6">
                             Com a Sumaristaai,{" "}
                             <span className="bg-linear-to-r
                         from-blue-500 to-blue-800 bg-clip-text text-transparent">
                                 criar sumários
                             </span>{" "}
                             nunca foi tão fácil.
-                        </h3>
+                        </MotionH3>
                     </div>
-                    <div className="flex items-center px-2 justify-center sm:px-4 lg:px-6">
-                        {/* SumaristaAI Demo */}
-                    </div>
+                </div>
+                <div className="flex items-center px-2 justify-center sm:px-4 lg:px-6">
+                    <MotionDiv initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <SummaryViewer summary={DEMO_SUMMARY} />
+                    </MotionDiv>
                 </div>
             </div>
         </section>

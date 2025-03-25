@@ -1,8 +1,11 @@
 import BgGradient from "@/components/common/bg-gradient";
+import { MotionDiv, MotionH1, MotionP } from "@/components/common/motion-wrapper";
 import EmptySummaryState from "@/components/summaries/empty-summary-state";
 import SummaryCard from "@/components/summaries/summary-card";
 import { Button } from "@/components/ui/button";
 import { getSummaries } from "@/lib/summaries";
+import { hasReachedUploadLimit } from "@/lib/user";
+import { containerVariants, itemVariants } from "@/utils/constants";
 import { currentUser } from "@clerk/nextjs/server";
 import { ArrowRight, Plus } from "lucide-react";
 import Link from "next/link";
@@ -15,42 +18,71 @@ export default async function DashboardPage() {
         return redirect("/sign-in");
     }
 
-    const uploadLimit = 5;
+    const { hasReachedLimit, uploadLimit } = await hasReachedUploadLimit(userId);
     const summaries = await getSummaries(userId);
 
     return (
         <main className="min-h-screen">
             <BgGradient className="bg-gradient-to-r from-emerald-200 via-teal-200 to-cyan-200" />
-            <div className="container mx-auto flex flex-col gap-4">
+            <MotionDiv
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="container mx-auto flex flex-col gap-4">
                 <div className="px-2 py-12 sm:py-24">
                     <div className="flex gap-4 mb-8 justify-between">
                         <div className="flex flex-col gap-2">
-                            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-gray-600 to-gray-900 text-transparent bg-clip-text">Seus Sumários</h1>
-                            <p className="text-gray-600">Transforme seus PDFs em insights concisos</p>
+                            <MotionH1
+                                variants={itemVariants}
+                                initial="hidden"
+                                whileInView="visible"
+                                className="text-4xl font-bold tracking-tight bg-gradient-to-r from-gray-600 to-gray-900 text-transparent bg-clip-text mb-6">Seus Sumários</MotionH1>
+                            <MotionP
+                                variants={itemVariants}
+                                initial="hidden"
+                                animate="visible"
+                                className="text-gray-600">
+                                Transforme seus PDFs em insights concisos
+                            </MotionP>
                         </div>
-                        <Button
-                            variant="link"
-                            className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white hover:scale-105 transition-all duration-300 group hover:no-underline"
+                        <MotionDiv
+                            variants={itemVariants}
+                            initial="hidden"
+                            animate="visible"
+                            whileHover={{ scale: 1.05 }}
+                            className="self-start"
                         >
-                            <Link href="/upload" className="flex items-center text-white">
-                                <Plus className="w-5 h-5 mr-2" />
-                                Novo Sumário
-                            </Link>
-                        </Button>
+                            <Button
+                                disabled={hasReachedLimit}
+                                variant="link"
+                                className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white hover:scale-105 transition-all duration-300 group hover:no-underline"
+                            >
+                                <Link href="/upload" className="flex items-center text-white">
+                                    <Plus className="w-5 h-5 mr-2" />
+                                    Novo Sumário
+                                </Link>
+                            </Button>
+                        </MotionDiv>
                     </div>
 
-                    <div className="mb-6">
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-800">
-                            <p>
-                                Você atingiu o limite de {uploadLimit} sumários no plano Básico. {" "}
-                                <Link href="/#pricing" className="text-blue-500 hover:text-blue-600 underline font-medium underline-offset-4 inline-flex items-center gap-1">
-                                    Clique aqui para fazer o upgrade para o plano PRO{" "}
-                                    <ArrowRight className="w-4 h-4 inline-block" />
-                                </Link>
-                                para criar sumários ilimitados.
-                            </p>
-                        </div>
-                    </div>
+                    {hasReachedLimit && (
+                        <MotionDiv
+                            variants={itemVariants}
+                            initial="hidden"
+                            animate="visible"
+                            className="mb-6">
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-800">
+                                <p>
+                                    Você atingiu o limite de {uploadLimit} sumários no plano Básico. {" "}
+                                    <Link href="/#pricing" className="text-blue-900 hover:text-blue-800 underline font-medium underline-offset-4 inline-flex items-center gap-1">
+                                        Clique aqui para fazer o upgrade para o plano PRO{" "}
+                                        <ArrowRight className="w-4 h-4 inline-block" />
+                                    </Link>
+                                    para criar sumários ilimitados.
+                                </p>
+                            </div>
+                        </MotionDiv>
+                    )}
 
                     {summaries.length === 0 ? (
                         <EmptySummaryState />
@@ -63,7 +95,7 @@ export default async function DashboardPage() {
                     )}
 
                 </div>
-            </div>
+            </MotionDiv>
         </main>
     );
 }
