@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { FileText } from "lucide-react";
 import { SummaryViewer } from "@/components/summaries/summary-viewer";
 import { MotionDiv } from "@/components/common/motion-wrapper";
+import { Suspense } from "react";
 
 export default async function SummaryPage(props: {
     params: Promise<{ id: string }>;
