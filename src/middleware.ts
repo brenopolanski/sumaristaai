@@ -1,13 +1,20 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware(() => {
-  return NextResponse.next();
+const isProtectedRoute = createRouteMatcher([
+  "/dashboard(.*)",
+  "/summaries(.*)",
+  "/upload(.*)",
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  if (isProtectedRoute(req)) await auth.protect();
 });
 
 export const config = {
   matcher: [
-    "/api/uploadthing(.*)", // Certifique-se que a API do UploadThing está sendo interceptada
-    "/((?!_next|favicon.ico).*)", // Intercepta todas as rotas, exceto arquivos estáticos
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/api/uploadthing(.*)",
+    "/(api|trpc)(.*)",
+    "/((?!_next|favicon.ico).*)",
   ],
 };
