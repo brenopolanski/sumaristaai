@@ -65,7 +65,14 @@ export default function UploadForm() {
             toast.info("Arquivo enviado! Nossa IA está lendo o seu arquivo... ✨");
 
             // Parse the PDF para o Langchain
-            const result = await generatePdfSummary(response);
+            const result = await generatePdfSummary(response as any);
+
+            if (!result) {
+                toast.error("Não foi possível gerar o sumário. Por favor, tente novamente.");
+                setIsLoading(false);
+                return;
+            }
+
             console.log({ result });
 
             const { data = null, message = null } = result || {};
