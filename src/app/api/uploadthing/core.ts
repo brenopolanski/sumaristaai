@@ -1,5 +1,5 @@
-import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { currentUser } from "@clerk/nextjs/server";
+import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
 const f = createUploadthing();
@@ -14,11 +14,21 @@ export const ourFileRouter = {
 
       return { userId: user.id };
     })
-    // @ts-ignore
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Upload completed for user id", metadata.userId); 
+      console.log("Upload completed for user id", metadata.userId);
       console.log("File URL", file.url);
-      return { userId: metadata.userId, file };
+
+      return {
+        userId: metadata.userId,
+        file: {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          customId: file.customId,
+          key: file.key,
+          url: file.url,
+        },
+      };
     }),
 } satisfies FileRouter;
 
