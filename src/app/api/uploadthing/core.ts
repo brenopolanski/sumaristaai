@@ -14,8 +14,9 @@ export const ourFileRouter = {
 
       return { userId: user.id };
     })
+    // @ts-ignore
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Upload completed for user id", metadata.userId);
+      console.log("Upload completed for user id", metadata.userId); 
       console.log("File URL", file.url);
       return { userId: metadata.userId, file };
     }),
