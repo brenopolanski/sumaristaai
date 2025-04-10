@@ -1,18 +1,18 @@
-import { ArrowRight, Sparkles } from "lucide-react";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import Link from "next/link";
-import {
-    MotionSection,
-    MotionDiv,
-    MotionH1,
-    MotionH2,
-    MotionSpan,
-} from "../common/motion-wrapper";
 import {
     containerVariants,
     itemVariants,
 } from "@/utils/constants";
+import { ArrowRight, Sparkles } from "lucide-react";
+import Link from "next/link";
+import {
+    MotionDiv,
+    MotionH1,
+    MotionH2,
+    MotionSection,
+    MotionSpan,
+} from "../common/motion-wrapper";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 
 const buttonVariants = {
     scale: 1.05,
@@ -39,29 +39,63 @@ export default function HeroSection() {
                     <p className="text-blue-600">Feito com IA</p>
                 </Badge>
             </MotionDiv>
-            <MotionH1 variants={itemVariants} className="font-bold py-6 text-center">
-                Gere Sumários
+
+            <MotionH1 variants={itemVariants} className="font-bold py-6 text-center text-4xl sm:text-5xl lg:text-6xl flex flex-wrap justify-center gap-x-2 gap-y-3">
+                <span className="relative inline-flex items-center">
+                    <MotionDiv
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                                duration: 0.6,
+                                delay: 0.2,
+                                type: "spring",
+                                stiffness: 200,
+                            },
+                        }}
+                        className="mr-1 text-3xl animate-zigzag"
+                    >
+                        ⚡
+                    </MotionDiv>
+                    Gere
+                </span>
+
+                <span className="relative inline-flex items-center">
+                    Sumários
+                </span>
+
                 <span className="relative inline-block">
-                    <MotionSpan whileHover={buttonVariants} className="relative z-10 px-2">Poderosos</MotionSpan>
+                    <MotionSpan whileHover={buttonVariants} className="relative z-10 px-2">
+                        Poderosos
+                    </MotionSpan>
                     <span
                         className="absolute inset-0 bg-blue-200/50 -rotate-2 rounded-lg transform -skew-y-1"
                         aria-hidden="true"
                     ></span>
-                </span>{" "}
-                com seus PDFs
+                </span>
+                <span className="relative inline-flex items-center">
+                    com seus
+                </span>
+
+                <span className="relative inline-flex items-center">
+                    PDFs
+                </span>
             </MotionH1>
+
             <MotionH2
                 variants={itemVariants}
                 className="text-lg sm:text-xl lg:text-2xl text-center px-4 lg:px-0 lg:max-w-4xl text-gray-600"
             >
                 Faça um sumário de qualquer PDF em segundos
             </MotionH2>
+
             <MotionDiv variants={itemVariants} whileHover={buttonVariants}>
                 <Button
                     variant={"link"}
                     className="text-white mt-6 text-base sm:text-lg lg:text-xl 
-                rounded-full px-8 sm:px-10 lg:px-12 py-6 sm:py-7 lg:py-8 lg:mt-16 bg-linear-to-r group hover:no-underline
-                from-slate-900 to-blue-800 hover:to-slate-900 hover:from-blue-800 font-bold shadow-lg transition-all duration-300"
+                    rounded-full px-8 sm:px-10 lg:px-12 py-6 sm:py-7 lg:py-8 lg:mt-16 bg-linear-to-r group hover:no-underline
+                    from-slate-900 to-blue-800 hover:to-slate-900 hover:from-blue-800 font-bold shadow-lg transition-all duration-300"
                 >
                     <Link href={"/#pricing"} className="flex gap-2 items-center">
                         Transforme agora

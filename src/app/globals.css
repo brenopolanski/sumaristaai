@@ -150,20 +150,24 @@ body {
 @utility container {
   margin-inline: auto;
   padding-inline: 2rem;
-  @media (width >= --theme(--breakpoint-sm)) {
+
+  @media (width >=--theme(--breakpoint-sm)) {
     max-width: none;
   }
-  @media (width >= 1400px) {
+
+  @media (width >=1400px) {
     max-width: 1400px;
   }
 }
 
 @keyframes gradient-x {
+
   0%,
   100% {
     background-size: 200% 100%;
     background-position: right center;
   }
+
   50% {
     background-size: 200% 100%;
     background-position: left center;
@@ -172,4 +176,60 @@ body {
 
 .animate-gradient-x {
   animation: gradient-x 3s ease infinite;
+}
+
+@keyframes zigzag {
+
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+
+  25% {
+    transform: translateX(-10px) rotate(-10deg);
+  }
+
+  50% {
+    transform: translateX(10px) rotate(10deg);
+  }
+
+  75% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+}
+
+@keyframes pulse-rotate {
+
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  50% {
+    transform: scale(1.2) rotate(15deg);
+  }
+}
+
+@keyframes float-up-down {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.animate-zigzag {
+  animation: zigzag 1.5s ease-in-out infinite;
+}
+
+.animate-pulse-rotate {
+  animation: pulse-rotate 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float-up-down 2.2s ease-in-out infinite;
 }
