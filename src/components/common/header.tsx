@@ -11,7 +11,7 @@ export default function Header() {
         py-4 lg: px - 8 px - 2 mx - auto">
             < div className="flex lg:flex-1" >
                 <NavLink href="/" className="flex items-center gap-1 lg:gap-2 shrink-0">
-                    <Image src={"/SumaristaAI-logo.webp"} alt="SumaristaAI Logo" width={40} height={40} />
+                    <Image src={"/SumaristaAI-logo.webp"} alt="SumaristaAI Logo" width={40} height={40} className='shadow-lg rounded-lg' />
                     {/* <div className='relative'>
                         <FileText className="w-5 h-5 lg:w-8 lg:h-8 text-gray-900 hover:rotate-12 
                 transition-transform duration-300 ease-in-out" />
