@@ -1,8 +1,9 @@
+import { getUserPlan } from "@/lib/user";
 import { ExternalLink, FileText } from "lucide-react";
 import { Button } from "../ui/button";
 import DownloadSummaryButton from "./download-summary-button";
 
-export default function SourceInfo({
+export default async function SourceInfo({
     fileName,
     originalFileUrl,
     title,
@@ -15,6 +16,8 @@ export default function SourceInfo({
     summaryText: string;
     createdAt: string;
 }) {
+    const userPlan = await getUserPlan();
+    const isPro = userPlan === "pro";
     return (
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <div className="flex items-center justify-center gap-2">
@@ -33,12 +36,14 @@ export default function SourceInfo({
                         Ver o original
                     </a>
                 </Button>
-                <DownloadSummaryButton
-                    title={title}
-                    summaryText={summaryText}
-                    fileName={fileName}
-                    createdAt={createdAt}
-                />
+                {isPro && (
+                    <DownloadSummaryButton
+                        title={title}
+                        summaryText={summaryText}
+                        fileName={fileName}
+                        createdAt={createdAt}
+                    />
+                )}
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import { pricingPlans } from "@/utils/constants";
+import { currentUser, User } from "@clerk/nextjs/server";
 import { getDbConnection } from "./db";
 import { getUserUploadCount } from "./summaries";
-import { currentUser, User } from "@clerk/nextjs/server";
 
 export const getPriceIdForActiveUser = async (email: string) => {
   const sql = await getDbConnection();
@@ -25,7 +25,7 @@ export async function hasReachedUploadLimit(userId: string) {
   const uploadCount = await getUserUploadCount(userId);
   const user = await currentUser();
   const priceId = await getPriceIdForActiveUser(
-    user?.emailAddresses[0].emailAddress || ""
+    user?.emailAddresses[0].emailAddress || "",
   );
 
   const isPro =
@@ -37,7 +37,18 @@ export async function hasReachedUploadLimit(userId: string) {
 
 export const getSubscriptionStatus = async (user: User) => {
   const hasSubscription = await hasActivePlan(
-    user.emailAddresses[0].emailAddress
+    user.emailAddresses[0].emailAddress,
   );
   return hasSubscription;
+};
+
+export const getUserPlan = async () => {
+  const user = await currentUser();
+  const priceId = await getPriceIdForActiveUser(
+    user?.emailAddresses[0].emailAddress || "",
+  );
+
+  const plan = pricingPlans.find((plan) => plan.priceId === priceId);
+  if (!plan) return null;
+  return plan.id;
 };
