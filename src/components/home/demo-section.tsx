@@ -24,7 +24,7 @@ export default function DemoSection() {
                             initial={{ opacity: 0, y: 20 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
                             className="font-bold text-3xl max-w-2xl mx-auto px-4 sm:px-6">
-                            Com a Sumaristaai,{" "}
+                            Com o SumaristaAI,{" "}
                             <span className="bg-linear-to-r
                         from-blue-500 to-blue-800 bg-clip-text text-transparent">
                                 criar sumários

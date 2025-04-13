@@ -1,18 +1,29 @@
-'use client'
+"use client";
 
-import UploadFormInput from '@/components/upload/upload-form-input';
-import { useUploadThing } from '../../utils/uploadthing';
-import { z } from 'zod';
-import { toast } from "sonner"
-import { generatePdfSummary, storePdfSummaryAction } from '@/actions/upload-actions';
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import LoadingSkeleton from './loading-skeleton';
+import {
+    generatePdfSummary,
+    storePdfSummaryAction,
+} from "@/actions/upload-actions";
+import UploadFormInput from "@/components/upload/upload-form-input";
+import { sendDiscordNotification } from "@/utils/discord";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { toast } from "sonner";
+import { z } from "zod";
+import { useUploadThing } from "../../utils/uploadthing";
+import LoadingSkeleton from "./loading-skeleton";
 
 const schema = z.object({
-    file: z.instanceof(File, { message: 'Arquivo inválido' })
-        .refine((file) => file.size <= 24 * 1024 * 1024, 'O arquivo deve ter menos de 24MB')
-        .refine((file) => file.type === 'application/pdf', 'O arquivo deve ser um PDF')
+    file: z
+        .instanceof(File, { message: "Arquivo inválido" })
+        .refine(
+            (file) => file.size <= 24 * 1024 * 1024,
+            "O arquivo deve ter menos de 24MB",
+        )
+        .refine(
+            (file) => file.type === "application/pdf",
+            "O arquivo deve ser um PDF",
+        ),
 });
 
 export default function UploadForm() {
@@ -39,9 +50,9 @@ export default function UploadForm() {
             setIsLoading(true);
             // Descomente a linha de baixo para testar o loading
             // return;
-            console.log('submitted');
+            console.log("submitted");
             const formData = new FormData(e.currentTarget);
-            const file = formData.get('file') as File;
+            const file = formData.get("file") as File;
 
             // Validar o arquivo
             const validatedFields = schema.safeParse({ file });
@@ -57,7 +68,9 @@ export default function UploadForm() {
             // Upload to UploadThing
             const response = await startUpload([file]);
             if (!response) {
-                toast.error("Algo deu errado! Por favor, use um arquivo PDF válido/diferente.");
+                toast.error(
+                    "Algo deu errado! Por favor, use um arquivo PDF válido/diferente.",
+                );
                 setIsLoading(false);
                 return;
             }
@@ -68,7 +81,9 @@ export default function UploadForm() {
             const result = await generatePdfSummary(response as any);
 
             if (!result) {
-                toast.error("Não foi possível gerar o sumário. Por favor, tente novamente.");
+                toast.error(
+                    "Não foi possível gerar o sumário. Por favor, tente novamente.",
+                );
                 setIsLoading(false);
                 return;
             }
@@ -86,16 +101,24 @@ export default function UploadForm() {
                         fileUrl: response[0].serverData.file.url,
                         summary: data.summary,
                         title: data.title,
-                        fileName: file.name
+                        fileName: file.name,
                     });
                     toast.success("✨ Sumário salvo com sucesso!");
+
+                    await sendDiscordNotification(
+                        `📄 +1 Novo sumário salvo!\nTítulo: ${data.title}\nArquivo: ${file.name}`,
+                    );
+
                     formRef.current?.reset();
                     router.push(`/summaries/${storeResult.data.id}`);
                 }
             }
         } catch (error) {
             setIsLoading(false);
-            console.error('Erro ao enviar o arquivo', error);
+            await sendDiscordNotification(
+                `❌ Erro ao salvar sumário do arquivo. \nErro: ${error}`,
+            );
+            console.error("Erro ao enviar o arquivo", error);
             formRef.current?.reset();
         } finally {
             setIsLoading(false);
@@ -104,16 +127,25 @@ export default function UploadForm() {
 
     return (
         <>
-            <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto" >
-                <UploadFormInput isLoading={isLoading} ref={formRef} onSubmit={handleSubmit} />
+            <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto">
+                <UploadFormInput
+                    isLoading={isLoading}
+                    ref={formRef}
+                    onSubmit={handleSubmit}
+                />
                 {isLoading && (
                     <>
-                        <div className='relative'>
-                            <div className='absolute inset-0 flex items-center justify-center' aria-hidden='true'>
-                                <div className='w-full border-t border-gray-200 dark:border-gray-800'></div>
+                        <div className="relative">
+                            <div
+                                className="absolute inset-0 flex items-center justify-center"
+                                aria-hidden="true"
+                            >
+                                <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
                             </div>
-                            <div className='relative flex justify-center mt-4'>
-                                <span className='bg-transparent px-3 py-1.5 text-muted-foreground text-sm'>Processando</span>
+                            <div className="relative flex justify-center mt-4">
+                                <span className="bg-transparent px-3 py-1.5 text-muted-foreground text-sm">
+                                    Processando
+                                </span>
                             </div>
                         </div>
                         <LoadingSkeleton />
@@ -122,4 +154,4 @@ export default function UploadForm() {
             </div>
         </>
     );
-};
+}
