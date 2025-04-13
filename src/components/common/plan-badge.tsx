@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Crown } from "lucide-react";
 export default async function PlanBadge() {
   const userPlan = await getUserPlan();
+  console.log("userPlan", userPlan);
   return (
     <Badge
       variant="outline"
