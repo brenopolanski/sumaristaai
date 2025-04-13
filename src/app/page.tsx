@@ -55,7 +55,7 @@ export default function Home() {
           rel="stylesheet"
         />
         <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico" />
-        <link rel="canonical" href="https://sumaristaai.vercel.app/" />
+        <link rel="canonical" href="https://sumaristaai.vercel.app" />
         <link rel="manifest" href="public/site.webmanifest" />
         <title>SumaristaAI | ⚡ Gere sumários com IA</title>
       </Head>
