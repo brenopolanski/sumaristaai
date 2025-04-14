@@ -2,10 +2,12 @@
 
 import {
     generatePdfSummary,
+    generatePdfText,
     storePdfSummaryAction,
 } from "@/actions/upload-actions";
 import UploadFormInput from "@/components/upload/upload-form-input";
 import { sendDiscordNotification } from "@/utils/discord";
+import { formatFileNameAsTitle } from "@/utils/format-utils";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -77,41 +79,41 @@ export default function UploadForm() {
 
             toast.info("Arquivo enviado! Nossa IA está lendo o seu arquivo... ✨");
 
-            // Parse the PDF para o Langchain
-            const result = await generatePdfSummary(response as any);
+            let storeResult: any;
 
-            if (!result) {
-                toast.error(
-                    "Não foi possível gerar o sumário. Por favor, tente novamente.",
-                );
-                setIsLoading(false);
-                return;
-            }
+            const formattedFileName = formatFileNameAsTitle(file.name);
 
-            console.log({ result });
+            const result = await generatePdfText(response[0].serverData.file.url);
 
-            const { data = null, message = null } = result || {};
+            toast.info("Gerando o sumário do PDF... ✨");
 
-            if (data) {
-                let storeResult: any;
+            const summaryResult = await generatePdfSummary({
+                pdfText: result?.data?.pdfText ?? "",
+                fileName: formattedFileName,
+            });
+
+            toast.info("Sumário gerado! ✨");
+
+            const { data = null, message = null } = summaryResult || {};
+
+            if (data?.summary) {
+                // Salvar no banco de dados
                 toast.info("Estamos salvando o seu sumário!... ✨");
-                if (data.summary) {
-                    // Salvar no banco de dados
-                    storeResult = await storePdfSummaryAction({
-                        fileUrl: response[0].serverData.file.url,
-                        summary: data.summary,
-                        title: data.title,
-                        fileName: file.name,
-                    });
-                    toast.success("✨ Sumário salvo com sucesso!");
 
-                    await sendDiscordNotification(
-                        `📄 +1 Novo sumário salvo!\nTítulo: ${data.title}\nArquivo: ${file.name}`,
-                    );
+                storeResult = await storePdfSummaryAction({
+                    fileUrl: response[0].serverData.file.url,
+                    summary: data.summary,
+                    title: formattedFileName,
+                    fileName: file.name,
+                });
+                toast.success("✨ Sumário gerado com sucesso!");
 
-                    formRef.current?.reset();
-                    router.push(`/summaries/${storeResult.data.id}`);
-                }
+                await sendDiscordNotification(
+                    `📄 +1 Novo sumário salvo!\nTítulo: ${data.title}\nArquivo: ${file.name}`,
+                );
+
+                formRef.current?.reset();
+                router.push(`/summaries/${storeResult.data.id}`);
             }
         } catch (error) {
             setIsLoading(false);

@@ -4,7 +4,6 @@ import { getDbConnection } from "@/lib/db";
 import { generateSummaryFromGemini } from "@/lib/gemini";
 import { fetchAndExtractText } from "@/lib/langchain";
 import { generateSummaryFromOpenAI } from "@/lib/openai";
-import { formatFileNameAsTitle } from "@/utils/format-utils";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
@@ -16,44 +15,49 @@ interface pdfSummaryType {
   fileName: string;
 }
 
-export async function generatePdfSummary(
-  uploadResponse: [
-    {
-      serverData: {
-        userId: string;
-        file: {
-          url: string;
-          name: string;
-        };
+export async function generatePdfText(fileUrl: string) {
+  if (!fileUrl) {
+    return {
+      success: false,
+      error: "Não foi possível enviar o arquivo. Por favor, tente novamente.",
+      data: null,
+    };
+  }
+  try {
+    const pdfText = await fetchAndExtractText(fileUrl);
+
+    if (!pdfText) {
+      return {
+        success: false,
+        error: "Falha ao buscar e extrair o texto do PDF.",
+        data: null,
       };
     }
-  ]
-) {
-  if (!uploadResponse) {
+
+    return {
+      success: true,
+      message: "Texto do PDF gerado com sucesso!",
+      data: {
+        pdfText,
+      },
+    };
+  } catch (error) {
     return {
       success: false,
-      error: "Não foi possível enviar o arquivo. Por favor, tente novamente.",
+      error: "Não foi possível buscar e extrair o texto do PDF.",
       data: null,
     };
   }
+}
 
-  const {
-    serverData: {
-      userId,
-      file: { url: pdfUrl, name: fileName },
-    },
-  } = uploadResponse[0];
-
-  if (!pdfUrl) {
-    return {
-      success: false,
-      error: "Não foi possível enviar o arquivo. Por favor, tente novamente.",
-      data: null,
-    };
-  }
-
+export async function generatePdfSummary({
+  pdfText,
+  fileName,
+}: {
+  pdfText: string;
+  fileName: string;
+}) {
   try {
-    const pdfText = await fetchAndExtractText(pdfUrl);
     let summary = null;
 
     try {
@@ -70,7 +74,7 @@ export async function generatePdfSummary(
       } catch (geminiError) {
         console.error("Erro ao gerar o sumário com Gemini:", geminiError);
         throw new Error(
-          "Erro ao gerar o sumário com as duas IA's disponíveis."
+          "Erro ao gerar o sumário com as duas IA's disponíveis.",
         );
       }
     }
@@ -83,20 +87,18 @@ export async function generatePdfSummary(
       };
     }
 
-    const formattedFileName = formatFileNameAsTitle(fileName);
-
     return {
       success: true,
       message: "Sumário gerado com sucesso!",
       data: {
-        title: formattedFileName,
+        title: fileName,
         summary,
       },
     };
   } catch (error) {
     return {
       success: false,
-      error: "Não foi possível enviar o arquivo. Por favor, tente novamente.",
+      error: "Falha ao gerar o sumário do PDF.",
       data: null,
     };
   }
