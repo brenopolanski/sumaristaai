@@ -1,9 +1,18 @@
-import React from "react";
-import Link from "next/link";
 import BgGradient from "@/components/common/bg-gradient";
 import { MotionDiv } from "@/components/common/motion-wrapper";
-import { itemVariants } from "@/utils/constants";
 import { Badge } from "@/components/ui/badge";
+import { itemVariants } from "@/utils/constants";
+import { Metadata } from "next";
+import Link from "next/link";
+import React from "react";
+
+export const metadata: Metadata = {
+  title: "Página não encontrada | SumaristaAI",
+  description: "A página que você está procurando não existe ou foi removida.",
+  openGraph: {
+    images: [{ url: "/opengraph-image.png" }],
+  },
+};
 
 const Custom404: React.FC = () => {
   return (

@@ -1,12 +1,20 @@
 import BgGradient from "@/components/common/bg-gradient";
-import SummaryHeader from "@/components/summaries/summary-header";
-import SourceInfo from "@/components/summaries/source-info";
-import { getSummaryById } from "@/lib/summaries";
-import { notFound } from "next/navigation";
-import { FileText } from "lucide-react";
-import { SummaryViewer } from "@/components/summaries/summary-viewer";
 import { MotionDiv } from "@/components/common/motion-wrapper";
-import { Suspense } from "react";
+import SourceInfo from "@/components/summaries/source-info";
+import SummaryHeader from "@/components/summaries/summary-header";
+import { SummaryViewer } from "@/components/summaries/summary-viewer";
+import { getSummaryById } from "@/lib/summaries";
+import { FileText } from "lucide-react";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+export const metadata: Metadata = {
+    title: "Sumário | SumaristaAI",
+    description: "Transforme seus PDFs em insights concisos",
+    openGraph: {
+        images: [{ url: "/opengraph-image.png" }],
+    },
+};
 
 export default async function SummaryPage(props: {
     params: Promise<{ id: string }>;
@@ -20,7 +28,14 @@ export default async function SummaryPage(props: {
         notFound();
     }
 
-    const { title, summary_text, file_name, word_count, created_at, original_file_url } = summary;
+    const {
+        title,
+        summary_text,
+        file_name,
+        word_count,
+        created_at,
+        original_file_url,
+    } = summary;
 
     const readingTime = Math.ceil((word_count || 0) / 200);
 
@@ -33,20 +48,28 @@ export default async function SummaryPage(props: {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
-                        className="flex flex-col">
-                        <SummaryHeader title={title} createdAt={created_at} readingTime={readingTime} />
-                        {file_name && <SourceInfo
-                            fileName={file_name}
-                            originalFileUrl={original_file_url}
+                        className="flex flex-col"
+                    >
+                        <SummaryHeader
                             title={title}
-                            summaryText={summary_text}
                             createdAt={created_at}
-                        />}
+                            readingTime={readingTime}
+                        />
+                        {file_name && (
+                            <SourceInfo
+                                fileName={file_name}
+                                originalFileUrl={original_file_url}
+                                title={title}
+                                summaryText={summary_text}
+                                createdAt={created_at}
+                            />
+                        )}
                         <MotionDiv
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, ease: "easeOut" }}
-                            className="relative mt-4 sm:mt-8 lg:mt-16">
+                            className="relative mt-4 sm:mt-8 lg:mt-16"
+                        >
                             <div className="relative p-4 sm:p-6 lg:p-8 bg-white/80 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-xl border border-blue-100 transition-all duration-300 hover:shadow-2xl hover:bg-white/90 max-w-4xl mx-auto">
                                 <div className="absolute inset-0 bg-linear-to-br from-blue-50/50 via-blue-50/30 to-transparent opacity-50 rounded-2xl sm:rounded-3xl" />
 
@@ -63,6 +86,6 @@ export default async function SummaryPage(props: {
                     </MotionDiv>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }

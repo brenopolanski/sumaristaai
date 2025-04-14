@@ -1,11 +1,12 @@
 //root file
+import Footer from "@/components/common/footer";
+import Header from "@/components/common/header";
+import { Toaster } from "@/components/ui/sonner";
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Source_Sans_3 as FontSans } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/common/header";
-import Footer from "@/components/common/footer";
-import { ClerkProvider } from "@clerk/nextjs";
-import { Toaster } from "@/components/ui/sonner";
+import { ORIGIN_URL } from "@/utils/helpers";
 
 const fontSans = FontSans({
   variable: "--font-sans",
@@ -14,8 +15,16 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Sumarista AI - Resumo Inteligente de PDF com IA",
-  description: "Sua IA especialista em resumos. Extraia insights de PDFs, textos e documentos com precisão e rapidez com o Sumaristaai.",
+  title: "SumaristaAI | ⚡ Gere sumários com IA",
+  description:
+    "Sua IA especialista em sumários. Extraia insights de PDFs, textos e documentos com precisão e rapidez com o SumaristaAI.",
+  openGraph: {
+    images: [{ url: "/opengraph-image.png" }],
+  },
+  metadataBase: new URL(ORIGIN_URL),
+  alternates: {
+    canonical: ORIGIN_URL,
+  },
 };
 
 export default function RootLayout({
@@ -32,9 +41,7 @@ export default function RootLayout({
         >
           <div className="relative flex flex-col min-h-screen">
             <Header />
-            <main className="flex-1">
-              {children}
-            </main>
+            <main className="flex-1">{children}</main>
             <Footer />
           </div>
           <Toaster />
