@@ -1,0 +1,17 @@
+name: Cron Job API
+
+on:
+  schedule:
+    - cron: '44 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  cron-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Vercel API for Cron Job
+        run: |
+          curl -X GET "http://sumaristaai.vercel.app/api/cron"
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
