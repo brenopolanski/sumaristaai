@@ -2,8 +2,7 @@ name: Cron Job API
 
 on:
   schedule:
-    - cron: '55 4 * * *'
-  workflow_dispatch:
+    - cron: '0 5 * * *'
 
 jobs:
   cron-job:
