@@ -23,15 +23,38 @@ export default async function addUploadToCount(email: string) {
   }
 }
 
-export async function getUploadCount(email: string) {
+export async function verifyReachedUploadLimit(email: string) {
   try {
     const sql = await getDbConnection();
+    const paymentResult = await verifyUserPayment(email);
+
+    if (paymentResult) {
+      return false;
+    }
+
     const result = await sql`
       SELECT upload_count FROM users WHERE email = ${email}
     `;
-    return result[0]?.upload_count || 0;
+    if (result[0]?.upload_count >= 3) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
     console.error("Error fetching upload count", error);
     return 0;
+  }
+}
+
+export async function verifyUserPayment(email: string) {
+  try {
+    const sql = await getDbConnection();
+    const result = await sql`
+      SELECT price_id FROM users WHERE email = ${email} AND status = 'active'
+    `;
+    return result[0]?.price_id || null;
+  } catch (error) {
+    console.error("Error verifying user payment", error);
+    return null;
   }
 }
