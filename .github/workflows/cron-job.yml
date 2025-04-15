@@ -1,4 +1,4 @@
-name: Cron Job API
+name: Reset upload_count
 
 on:
   schedule:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Call Vercel API for Cron Job
+      - name: Call Cron Job API
         run: |
           curl -X GET "http://sumaristaai.vercel.app/api/cron"
         env:
