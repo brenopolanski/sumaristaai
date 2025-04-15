@@ -12,10 +12,11 @@ export async function handleSubscriptionDeleted({
 
   try {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-
     const sql = await getDbConnection();
 
-    await sql`UPDATE users SET status = 'canceled' WHERE customer_id = ${subscription.customer}`;
+    await sql`
+      UPDATE users SET status = 'canceled' WHERE customer_id = ${subscription.customer}
+    `;
 
     console.log("Assinatura deletada com sucesso");
   } catch (error) {
@@ -32,27 +33,28 @@ export async function handleCheckoutCompleted({
   stripe: Stripe;
 }) {
   const sql = await getDbConnection();
-  // const session = await stripe.checkout.sessions.retrieve(sessionId, {});
   console.log("Sessão do checkout concluída", session);
+
   const customerId = session.customer as string;
   const customer = await stripe.customers.retrieve(customerId);
   const priceId = session.line_items?.data[0].price?.id as string;
 
   if ("email" in customer && priceId) {
     const { email, name } = customer;
+
     await createOrUpdateUser({
       sql,
       email: email as string,
       fullName: name as string,
       customerId,
-      priceId: priceId as string,
+      priceId,
       status: "active",
     });
 
     await createPayment({
       sql,
       session,
-      priceId: priceId as string,
+      priceId,
       userEmail: email as string,
     });
   }
@@ -74,14 +76,23 @@ async function createOrUpdateUser({
   sql: any;
 }) {
   try {
-    const user = await sql`
-      SELECT * FROM users WHERE email = ${email}
-    `;
+    const user = await sql`SELECT * FROM users WHERE email = ${email}`;
 
     if (user.length === 0) {
+      // Insere novo usuário
       await sql`
         INSERT INTO users (email, full_name, customer_id, price_id, status)
         VALUES (${email}, ${fullName}, ${customerId}, ${priceId}, ${status})
+      `;
+    } else {
+      // Atualiza usuário existente
+      await sql`
+        UPDATE users
+        SET full_name = ${fullName},
+            customer_id = ${customerId},
+            price_id = ${priceId},
+            status = ${status}
+        WHERE email = ${email}
       `;
     }
   } catch (error) {
@@ -101,8 +112,12 @@ async function createPayment({
   sql: any;
 }) {
   try {
-    const { amount_total, id, customer_email, status } = session;
-    await sql`INSERT INTO payments (amount, status, stripe_payment_id, price_id, user_email) VALUES (${amount_total}, ${status}, ${id}, ${priceId}, ${userEmail})`;
+    const { amount_total, id, status } = session;
+
+    await sql`
+      INSERT INTO payments (amount, status, stripe_payment_id, price_id, user_email)
+      VALUES (${amount_total}, ${status}, ${id}, ${priceId}, ${userEmail})
+    `;
   } catch (error) {
     console.error("Erro ao criar pagamento", error);
   }

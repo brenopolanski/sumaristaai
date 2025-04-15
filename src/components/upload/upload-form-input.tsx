@@ -11,9 +11,10 @@ import { itemVariants } from '@/utils/constants';
 interface UploadFormInputProps {
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     isLoading: boolean;
+    disabled?: boolean;
 }
 
-export const UploadFormInput = forwardRef<HTMLFormElement, UploadFormInputProps>(({ onSubmit, isLoading }, ref) => {
+export const UploadFormInput = forwardRef<HTMLFormElement, UploadFormInputProps>(({ onSubmit, isLoading, disabled }, ref) => {
     return (
         <form ref={ref} className="flex flex-col gap-6" onSubmit={onSubmit}>
             <MotionDiv
@@ -26,12 +27,12 @@ export const UploadFormInput = forwardRef<HTMLFormElement, UploadFormInputProps>
                     name="file"
                     accept='application/pdf'
                     required
-                    disabled={isLoading}
+                    disabled={isLoading || disabled}
                     className={cn(
                         "cursor-pointer",
                         isLoading && "cursor-not-allowed opacity-50"
                     )} />
-                <Button disabled={isLoading}>
+                <Button disabled={isLoading || disabled}>
                     {isLoading ?
                         <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />

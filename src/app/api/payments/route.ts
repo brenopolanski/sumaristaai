@@ -5,7 +5,10 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(
+  process.env.STRIPE_SECRET_KEY! ||
+    "sk_test_51R5bkjPQG3QEj6dTGoMfa9PNprgqmr0akDfd3phs8TjldoiKLKmhz0V0yNug6VfR9CxP43W7BajYyoGgRrJNtpP5009FwkdPbD",
+);
 
 export const POST = async (req: NextRequest) => {
   const payload = await req.text();
@@ -17,7 +20,8 @@ export const POST = async (req: NextRequest) => {
     event = stripe.webhooks.constructEvent(
       payload,
       sig!,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET! ||
+        "whsec_Bc3oSa898AbnuPo8w52bnlJk7371wYdb", // O webhook sempre muda caso for test (se testar no local usando o tl --port 3000)
     );
 
     switch (event.type) {
@@ -49,7 +53,7 @@ export const POST = async (req: NextRequest) => {
   } catch (error) {
     return NextResponse.json(
       { status: "error", message: "Falha ao processar o evento", error },
-      { status: 400 }
+      { status: 400 },
     );
   }
   return NextResponse.json({ status: "success" });

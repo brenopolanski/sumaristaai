@@ -1,4 +1,4 @@
-import UpgradeRequired from "@/components/common/upgrade-required";
+import { verifyReachedUploadLimit } from "@/actions/user-actions";
 import { hasActivePlan } from "@/lib/user";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
@@ -25,10 +25,13 @@ export default async function UploadLayout({
   const hasActiveSubscription = await hasActivePlan(
     user.emailAddresses[0].emailAddress,
   );
+  const reachedUploadLimit = await verifyReachedUploadLimit(
+    user.emailAddresses[0].emailAddress,
+  );
 
-  if (!hasActiveSubscription) {
-    return <UpgradeRequired />;
-  }
+  // if (!hasActiveSubscription ) {
+  //   return <UpgradeRequired />;
+  // }
 
   return <section className="min-h-screen">{children}</section>;
 }
