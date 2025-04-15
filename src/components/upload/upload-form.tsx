@@ -5,9 +5,11 @@ import {
     generatePdfText,
     storePdfSummaryAction,
 } from "@/actions/upload-actions";
+import addUploadToCount from "@/actions/user-actions";
 import UploadFormInput from "@/components/upload/upload-form-input";
 import { sendDiscordNotification } from "@/utils/discord";
 import { formatFileNameAsTitle } from "@/utils/format-utils";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -31,6 +33,7 @@ const schema = z.object({
 export default function UploadForm() {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
+    const { user } = useUser();
 
     const formRef = useRef<HTMLFormElement>(null);
     const { startUpload, routeConfig } = useUploadThing("pdfUploader", {
@@ -106,11 +109,17 @@ export default function UploadForm() {
                     title: formattedFileName,
                     fileName: file.name,
                 });
+
                 toast.success("✨ Sumário gerado com sucesso!");
 
                 await sendDiscordNotification(
-                    `📄 +1 Novo sumário salvo!\nTítulo: ${data.title}\nArquivo: ${file.name}`,
+                    `O usuário ${user?.firstName} (${user?.emailAddresses}) gerou um sumário do arquivo ${file.name}. 🚀📃 \n`,
                 );
+
+                const primaryEmail = user?.emailAddresses?.[0]?.emailAddress;
+                if (primaryEmail) {
+                    await addUploadToCount(primaryEmail);
+                }
 
                 formRef.current?.reset();
                 router.push(`/summaries/${storeResult.data.id}`);
