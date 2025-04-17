@@ -22,7 +22,7 @@ Nosso sistema de inteligência artificial irá analisar seu PDF e criar um sumá
 
 Receba um sumário claro, objetivo e direto ao ponto com base no seu conteúdo.
 
-## 🔗 Links úteis
+## 🔗 Links úteis (Usados no projetos)
 
 - NeonDB: https://console.neon.tech/
 - UploadThing: https://uploadthing.com/dashboard
