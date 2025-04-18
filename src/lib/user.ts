@@ -44,7 +44,7 @@ export const getSubscriptionStatus = async (user: User) => {
   return hasSubscription;
 };
 
-export const getUserPlan = async (emailAddress: string) => {
+export const getUserPlan = async () => {
   const user = await currentUser();
   const priceId = await getPriceIdForActiveUser(
     user?.emailAddresses[0].emailAddress || "",
