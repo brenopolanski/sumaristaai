@@ -3,16 +3,16 @@ import { isDev } from "./helpers";
 export const pricingPlans = [
   {
     name: "Básico",
-    price: 19,
+    price: 5,
     description: "Para usuários ocasional",
-    items: ["5 sumários por mês", "Processamento padrão", "Suporte por email"],
+    items: ["Armazenamento de 5 sumários", "Processamento padrão", "Suporte por email"],
     id: "basic",
-    paymentLink: isDev ? "https://buy.stripe.com/test_fZe8Au27LbjrgIEbIM" : "https://buy.stripe.com/fZe6oJeuObnq7zW8ww",
-    priceId: isDev ? "price_1RDG9qPQG3QEj6dTRmUWvwAk" : "price_1RDGy1AJAEznduIyGBtFtfGk",
+    paymentLink: isDev ? "https://buy.stripe.com/test_3csdUOh2F1IR0JG5kr" : "https://buy.stripe.com/28o5kF2M6dvyg6s9AC",
+    priceId: isDev ? "price_1RF6NDPQG3QEj6dT8Q33lwJO" : "price_1RF6amAJAEznduIyIenSb13e",
   },
   {
     name: "Pro",
-    price: 89,
+    price: 14.9,
     description: "Para profissionais e equipes",
     items: [
       "Sumários ilimitados em PDF",
@@ -21,8 +21,8 @@ export const pricingPlans = [
       "Exportação em Markdown",
     ],
     id: "pro",
-    paymentLink: isDev ? "https://buy.stripe.com/test_8wM8Au7s5cnvcsodQV" : "https://buy.stripe.com/00g6oJfySdvy4nKfYZ",
-    priceId: isDev ? "price_1RDGFuPQG3QEj6dTEDS7dq5f" : "price_1RDGybAJAEznduIydwORw4sN",
+    paymentLink: isDev ? "https://buy.stripe.com/test_bIY5oicMp1IR3VS8wC" : "https://buy.stripe.com/aEU28t86q636f2o6or",
+    priceId: isDev ? "price_1RF6O6PQG3QEj6dTYSVtOdIr" : "price_1RF6aqAJAEznduIy6PaI5tAD",
   },
 ];
 
