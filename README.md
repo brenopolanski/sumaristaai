@@ -32,3 +32,19 @@ Receba um sumário claro, objetivo e direto ao ponto com base no seu conteúdo.
 - OpenAI: https://platform.openai.com/docs/concepts
 - Shadcn: https://ui.shadcn.com/docs/components
 - Zod: https://zod.dev/
+
+## ⌨️ Modo Desenvolvimento
+
+### 🔐 Stripe
+
+No ambiente de desenvolvimento (modo teste) do Stripe, siga os passos abaixo:
+
+1. Acesse a [Dashboard do Stripe](https://dashboard.stripe.com/test/dashboard) em **modo de teste**.
+2. Copie a **chave da API de teste** e utilize-a na sua aplicação.
+3. Sempre que iniciar o servidor local com o comando:
+   ```bash
+   tl --port 3000
+  ```
+4. Atualize a URL do Webhook no Stripe, apontando para essa nova URL, para garantir que os eventos sejam recebidos corretamente pelo seu servidor local.
+
+⚠️ Lembre-se: essa URL muda a cada reinicialização, então é importante atualizá-la sempre que iniciar novamente o servidor.

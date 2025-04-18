@@ -1,3 +1,4 @@
+import { verifyReachedUploadLimit } from "@/actions/user-actions";
 import BgGradient from "@/components/common/bg-gradient";
 import {
     MotionDiv,
@@ -26,13 +27,19 @@ export const metadata: Metadata = {
 
 export default async function DashboardPage() {
     const user = await currentUser();
-    const userId = user?.id;
-    if (!userId) {
-        return redirect("/sign-in");
+    if (!user) {
+        redirect("/sign-in");
     }
+
+    const reachedUploadLimit = await verifyReachedUploadLimit(
+        user.emailAddresses[0].emailAddress,
+    );
+    const userId = user?.id;
 
     const { hasReachedLimit, uploadLimit } = await hasReachedUploadLimit(userId);
     const summaries = await getSummaries(userId);
+
+    const isDisabled = hasReachedLimit || reachedUploadLimit;
 
     return (
         <main className="min-h-screen">
@@ -71,7 +78,7 @@ export default async function DashboardPage() {
                             className="self-start"
                         >
                             <Button
-                                disabled={hasReachedLimit}
+                                disabled={isDisabled}
                                 variant="link"
                                 className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white hover:scale-105 transition-all duration-300 group hover:no-underline"
                             >
@@ -99,6 +106,29 @@ export default async function DashboardPage() {
                                         className="text-blue-900 hover:text-blue-800 underline font-medium underline-offset-4 inline-flex items-center gap-1"
                                     >
                                         Clique aqui para fazer o upgrade para o plano PRO{" "}
+                                        <ArrowRight className="w-4 h-4 inline-block" />
+                                    </Link>
+                                    para criar sumários ilimitados.
+                                </p>
+                            </div>
+                        </MotionDiv>
+                    )}
+
+                    {reachedUploadLimit && (
+                        <MotionDiv
+                            variants={itemVariants}
+                            initial="hidden"
+                            animate="visible"
+                            className="mb-6"
+                        >
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-800">
+                                <p>
+                                    Você atingiu o limite de 3 sumários por dia.{" "}
+                                    <Link
+                                        href="/#pricing"
+                                        className="text-blue-900 hover:text-blue-800 underline font-medium underline-offset-4 inline-flex items-center gap-1"
+                                    >
+                                        Clique aqui para comprar um plano{" "}
                                         <ArrowRight className="w-4 h-4 inline-block" />
                                     </Link>
                                     para criar sumários ilimitados.

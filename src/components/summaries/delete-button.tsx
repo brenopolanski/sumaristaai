@@ -55,7 +55,7 @@ export default function DeleteButton({ summaryId }: DeleteButtonProps) {
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                    <Button variant="outline" className='bg-gray-500 hover:bg-gray-600' onClick={() => setOpen(false)}>Cancelar</Button>
+                    <Button variant="outline" className='bg-gray-500 hover:bg-gray-600 text-white' onClick={() => setOpen(false)}>Cancelar</Button>
                     <Button variant="destructive" className={cn('bg-blue-500 hover:bg-blue-600', isPending && 'opacity-50 cursor-not-allowed')} onClick={handleDelete}>{isPending ? "Deletando..." : 'Deletar'}</Button>
                 </DialogFooter>
             </DialogContent>

@@ -1,4 +1,6 @@
+import { verifyUserPayment } from "@/actions/user-actions";
 import { containerVariants, itemVariants } from "@/utils/constants";
+import { currentUser } from "@clerk/nextjs/server";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import {
@@ -16,7 +18,11 @@ const buttonVariants = {
     transition: { type: "spring", stiffness: 300, damping: 10 },
 };
 
-export default function HeroSection() {
+export default async function HeroSection() {
+    const user = await currentUser();
+    const userEmail = user?.emailAddresses[0]?.emailAddress || null;
+    const userPlan = userEmail ? await verifyUserPayment(userEmail) : null;
+
     return (
         <MotionSection
             variants={containerVariants}
@@ -88,7 +94,10 @@ export default function HeroSection() {
             </MotionH2>
 
             <MotionDiv variants={itemVariants} whileHover={buttonVariants}>
-                <Link href={"/#pricing"} className="flex gap-2 items-center">
+                <Link
+                    href={userPlan ? "/upload" : "/#pricing"}
+                    className="flex gap-2 items-center"
+                >
                     <Button
                         variant={"link"}
                         className="text-white mt-6 text-base sm:text-lg lg:text-xl 
