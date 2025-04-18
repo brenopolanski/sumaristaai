@@ -54,3 +54,12 @@ export const getUserPlan = async () => {
   if (!plan) return null;
   return plan.id;
 };
+
+export const getUserFromDb = async (email: string) => {
+  const sql = await getDbConnection();
+  const query = await sql`
+        SELECT * FROM users
+        WHERE email = ${email}
+    `;
+  return query?.[0] || false;
+}
