@@ -1,5 +1,5 @@
 import { verifyReachedUploadLimit } from "@/actions/user-actions";
-import { hasActivePlan } from "@/lib/user";
+import { getUserFromDb, getUserPlan, hasActivePlan } from "@/lib/user";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -22,12 +22,18 @@ export default async function UploadLayout({
     redirect("/sign-in");
   }
 
-  const hasActiveSubscription = await hasActivePlan(
-    user.emailAddresses[0].emailAddress,
-  );
-  const reachedUploadLimit = await verifyReachedUploadLimit(
-    user.emailAddresses[0].emailAddress,
-  );
+  // A verificação parece inútil, já que o usuário já foi verificado acima. Porém é um double check
+  const userExistsInDatabase = await getUserFromDb(user.emailAddresses[0].emailAddress);
+  if (!userExistsInDatabase) {
+    redirect("/sign-in");
+  }
+
+  // const hasActiveSubscription = await hasActivePlan(
+  //   user.emailAddresses[0].emailAddress,
+  // );
+  // const reachedUploadLimit = await verifyReachedUploadLimit(
+  //   user.emailAddresses[0].emailAddress,
+  // );
 
   // if (!hasActiveSubscription ) {
   //   return <UpgradeRequired />;

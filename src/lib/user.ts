@@ -44,7 +44,7 @@ export const getSubscriptionStatus = async (user: User) => {
   return hasSubscription;
 };
 
-export const getUserPlan = async () => {
+export const getUserPlan = async (emailAddress: string) => {
   const user = await currentUser();
   const priceId = await getPriceIdForActiveUser(
     user?.emailAddresses[0].emailAddress || "",
@@ -54,3 +54,12 @@ export const getUserPlan = async () => {
   if (!plan) return null;
   return plan.id;
 };
+
+export const getUserFromDb = async (email: string) => {
+  const sql = await getDbConnection();
+  const query = await sql`
+        SELECT * FROM users
+        WHERE email = ${email}
+    `;
+  return query?.[0] || false;
+}
