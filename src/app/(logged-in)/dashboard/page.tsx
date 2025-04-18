@@ -39,7 +39,7 @@ export default async function DashboardPage() {
     const { hasReachedLimit, uploadLimit } = await hasReachedUploadLimit(userId);
     const summaries = await getSummaries(userId);
 
-    const isDisabled = hasReachedLimit || reachedUploadLimit;
+    const isDisabled = hasReachedLimit || reachedUploadLimit || false;
 
     return (
         <main className="min-h-screen">
