@@ -48,3 +48,21 @@ No ambiente de desenvolvimento (modo teste) do Stripe, siga os passos abaixo:
 4. Atualize a URL do Webhook no Stripe, apontando para essa nova URL, para garantir que os eventos sejam recebidos corretamente pelo seu servidor local.
 
 ⚠️ Lembre-se: essa URL muda a cada reinicialização, então é importante atualizá-la sempre que iniciar novamente o servidor.
+
+### 🔐 Clerk
+
+No ambiente de desenvolvimento (modo teste) do Clerk, siga os passos abaixo:
+
+1. Acesse o [Dashboard do Clerk](https://dashboard.clerk.com/) e certifique-se de estar em **modo de desenvolvimento**.
+2. Copie as **chaves de API de desenvolvimento**, disponíveis na aba **API Keys** do seu projeto:
+   - `CLERK_PUBLISHABLE_KEY`
+   - `CLERK_SECRET_KEY`
+   - (Opcional: `CLERK_JWT_KEY`, se necessário)
+3. Utilize essas chaves na sua aplicação, normalmente por meio de variáveis de ambiente:
+   ```env
+   CLERK_PUBLISHABLE_KEY=pk_test_...
+   CLERK_SECRET_KEY=sk_test_...
+   ```
+4. Configuração do **Webhook** no endpoint /api/sign-up
+
+⚠️ Lembre-se: essa URL muda a cada reinicialização, então é importante atualizá-la sempre que iniciar novamente o servidor.
