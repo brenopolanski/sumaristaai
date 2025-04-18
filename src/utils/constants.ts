@@ -3,7 +3,7 @@ import { isDev } from "./helpers";
 export const pricingPlans = [
   {
     name: "Básico",
-    price: "5",
+    price: 5,
     description: "Para usuários ocasional",
     items: ["Armazenamento de 5 sumários", "Processamento padrão", "Suporte por email"],
     id: "basic",
@@ -12,7 +12,7 @@ export const pricingPlans = [
   },
   {
     name: "Pro",
-    price: "14,9",
+    price: 14.9,
     description: "Para profissionais e equipes",
     items: [
       "Sumários ilimitados em PDF",
