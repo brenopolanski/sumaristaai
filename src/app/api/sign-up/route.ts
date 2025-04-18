@@ -1,4 +1,5 @@
 import { getDbConnection } from "@/lib/db";
+import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Webhook } from "svix";
@@ -18,17 +19,17 @@ export const POST = async (req: Request) => {
   const payload = await req.text();
   const wh = new Webhook(WEBHOOK_SECRET);
 
-  let evt;
-  try {
-    evt = wh.verify(payload, {
-      "svix-id": svix_id,
-      "svix-timestamp": svix_timestamp,
-      "svix-signature": svix_signature,
-    });
-  } catch (err) {
-    console.error("Erro ao verificar webhook:", err);
-    return NextResponse.json({ error: "Invalid webhook" }, { status: 400 });
-  }
+  let evt: any;
+try {
+  evt = wh.verify(payload, {
+    "svix-id": svix_id,
+    "svix-timestamp": svix_timestamp,
+    "svix-signature": svix_signature,
+  }) as WebhookEvent;
+} catch (err) {
+  console.error("Erro ao verificar webhook:", err);
+  return NextResponse.json({ error: "Invalid webhook" }, { status: 400 });
+}
 
   const eventType = evt.type;
   const data = evt.data;
