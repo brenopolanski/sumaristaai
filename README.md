@@ -64,5 +64,3 @@ No ambiente de desenvolvimento (modo teste) do Clerk, siga os passos abaixo:
    CLERK_SECRET_KEY=sk_test_...
    ```
 4. Configuração do **Webhook** no endpoint /api/sign-up
-
-⚠️ Lembre-se: essa URL muda a cada reinicialização, então é importante atualizá-la sempre que iniciar novamente o servidor.
