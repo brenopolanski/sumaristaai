@@ -1,8 +1,8 @@
-import { Pizza } from "lucide-react";
+import { DEMO_SUMMARY } from "@/utils/demo-summary";
+import { Clock } from "lucide-react";
+import BgGradient from "../common/bg-gradient";
 import { MotionDiv, MotionH3 } from "../common/motion-wrapper";
 import { SummaryViewer } from "../summaries/summary-viewer";
-import { DEMO_SUMMARY } from "@/utils/demo-summary";
-import BgGradient from "../common/bg-gradient";
 export default function DemoSection() {
     return (
         <section className="relative">
@@ -17,7 +17,7 @@ export default function DemoSection() {
                     <div className="inline-flex items-center justify-center
                     p-2 rounded-2xl bg-gray-100/80 backdrop-blur-xs border border-gray-500/20
                     mb-4">
-                        <Pizza className="w-6 h-6 text-blue-500" />
+                        <Clock className="w-6 h-6 text-blue-500" />
                     </div>
                     <div className="text-center mb-16">
                         <MotionH3 whileInView={{ opacity: 1, y: 0 }}

@@ -74,7 +74,7 @@ export default async function HeroSection() {
                         whileHover={buttonVariants}
                         className="relative z-10 px-2"
                     >
-                        Poderosos
+                        Poderosos 🚀
                     </MotionSpan>
                     <span
                         className="absolute inset-0 bg-blue-200/50 -rotate-2 rounded-lg transform -skew-y-1"
@@ -83,7 +83,24 @@ export default async function HeroSection() {
                 </span>
                 <span className="relative inline-flex items-center">com seus</span>
 
-                <span className="relative inline-flex items-center">PDFs</span>
+                <span className="relative inline-flex items-center">PDFs
+                    <MotionDiv
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                                duration: 0.6,
+                                delay: 0.2,
+                                type: "spring",
+                                stiffness: 200,
+                            },
+                        }}
+                        className="mr-1 text-3xl animate-float rotate-6"
+                    >
+                        📑
+                    </MotionDiv>
+                </span>
             </MotionH1>
 
             <MotionH2
@@ -95,7 +112,7 @@ export default async function HeroSection() {
 
             <MotionDiv variants={itemVariants} whileHover={buttonVariants}>
                 <Link
-                    href={userPlan ? "/upload" : "/#pricing"}
+                    href={userEmail ? "/upload" : "/sign-in"}
                     className="flex gap-2 items-center"
                 >
                     <Button
