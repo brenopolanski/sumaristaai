@@ -2,7 +2,7 @@ name: Reset upload_count
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 3 * * *"  # Meia-noite no horário de Brasília (UTC-3)
   workflow_dispatch:
 
 jobs:
