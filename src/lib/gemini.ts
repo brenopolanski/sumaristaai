@@ -1,7 +1,6 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SUMMARY_SYSTEM_PROMPT } from "@/utils/prompts";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Inicializa a API Gemini com sua chave de API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 export const generateSummaryFromGemini = async (pdfText: string) => {
@@ -32,13 +31,29 @@ export const generateSummaryFromGemini = async (pdfText: string) => {
     const result = await model.generateContent(prompt);
     const response = await result.response;
 
-    if (!response.text()) {
+    const output = response.text();
+    if (!output) {
       throw new Error("Gemini API: Gemini retornou um texto vazio");
     }
 
-    return response.text();
+    return output;
   } catch (error: any) {
     console.error("Gemini API Error:", error);
-    throw error;
+
+    const errorMessage = error?.message?.toLowerCase() || "";
+
+    if (
+      errorMessage.includes("rate limit") ||
+      errorMessage.includes("quota") ||
+      errorMessage.includes("exceeded")
+    ) {
+      throw new Error(
+        "Servidor está sobrecarregado. Aguarde um minuto e tente novamente.",
+      );
+    }
+
+    throw new Error(
+      "Ocorreu um erro ao gerar o resumo. Tente novamente mais tarde.",
+    );
   }
 };
