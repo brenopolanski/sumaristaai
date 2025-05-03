@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     apple: "/favicon/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
-  themeColor: "#1465FF",
+  themeColor: "#1164FF",
   metadataBase: new URL(ORIGIN_URL),
   alternates: {
     canonical: ORIGIN_URL,
