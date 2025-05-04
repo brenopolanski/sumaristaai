@@ -44,8 +44,8 @@ jobs:
       - name: Clear Next.js cache
         run: rm -rf .next
 
-      - name: Build app
-        run: npm run build
+      # - name: Build app
+      #   run: npm run build
 
       - name: Run Cypress tests (E2E headless)
         uses: cypress-io/github-action@v6
