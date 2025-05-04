@@ -2,14 +2,15 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
   pull_request:
-    branches: [main]
+    branches: 
+      - main
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     env:
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
@@ -23,29 +24,37 @@ jobs:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
     steps:
+      # Checkout the repository code
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 'node'
 
+      # Clean npm cache to avoid issues from cached modules
       - name: Clean npm cache
         run: npm cache clean --force
 
+      # Install dependencies without cache to ensure consistency
       - name: Install dependencies (no cache)
         run: npm ci --force
 
+      # Ensure TypeScript configuration file is present
       - name: Ensure tsconfig is present
         run: cat tsconfig.json
 
+      # Clear Next.js build cache to prevent outdated files from interfering
       - name: Clear Next.js cache
         run: rm -rf .next
 
+      # Build the application for production
       - name: Build app
         run: npm run build
 
+      # Run Cypress E2E tests in headless mode
       - name: Run Cypress tests (E2E headless)
         uses: cypress-io/github-action@v6
         with:
