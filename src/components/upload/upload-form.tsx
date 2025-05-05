@@ -127,7 +127,7 @@ export default function UploadForm() {
         } catch (error) {
             setIsLoading(false);
             await sendDiscordNotification(
-                `❌ Erro ao salvar sumário do arquivo. \nErro: ${error}`,
+                `❌ Erro ao salvar sumário do usuário: ${user?.firstName} (${user?.emailAddresses}) \nErro: ${error}`,
             );
             console.error("Erro ao enviar o arquivo", error);
             formRef.current?.reset();
