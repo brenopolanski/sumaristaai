@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  cypress-tests:
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
@@ -22,6 +22,8 @@ jobs:
       STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
       NODE_ENV: development
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -32,57 +34,17 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Clean npm cache
-        run: npm cache clean --force
-
       - name: Install dependencies
         run: npm ci
 
-      - name: Install TypeScript if needed
-        run: |
-          if [ -f tsconfig.json ]; then
-            npm install --save-dev typescript
-          fi
+      - name: Build Next.js app
+        run: npm run build
 
-      - name: Clear Next.js cache
-        run: rm -rf .next
-
-  cypress-run:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm i
-
-      - name: Run Cypress tests (parallel + record)
+      - name: Start app and run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm run dev
-          wait-on: 'http://10.1.0.73:3000'
+          start: npm run start
+          wait-on: 'http://localhost:3000'
           wait-on-timeout: 60
           record: true
-          parallel: true
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-          UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
-          NODE_ENV: development
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          parallel: false
