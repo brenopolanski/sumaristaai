@@ -69,7 +69,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           start: npm run dev
-          wait-on: 'http://localhost:3000'
+          wait-on: 'http://10.1.0.73:3000'
           wait-on-timeout: 60
           record: true
           parallel: true
