@@ -20,7 +20,7 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
       STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
-      NODE_ENV: production
+      NODE_ENV: development
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
     steps:
@@ -38,22 +38,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Ensure tsconfig is present
-        run: cat tsconfig.json
+      - name: Install TypeScript if needed
+        run: |
+          if [ -f tsconfig.json ]; then
+            npm install --save-dev typescript
+          fi
 
       - name: Clear Next.js cache
         run: rm -rf .next
-
-      # - name: Build app
-      #   run: npm run build
 
   cypress-run:
     needs: build-and-test
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      # matrix:
-      #   containers: [1, 2] # 2 parallel containers
 
     steps:
       - name: Checkout
@@ -86,5 +84,5 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
           STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
-          NODE_ENV: production
+          NODE_ENV: development
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
