@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD with Cypress
 
 on:
   push:
@@ -35,7 +35,7 @@ jobs:
       - name: Clean npm cache
         run: npm cache clean --force
 
-      - name: Install dependencies (no cache)
+      - name: Install dependencies
         run: npm ci
 
       - name: Ensure tsconfig is present
@@ -47,10 +47,34 @@ jobs:
       # - name: Build app
       #   run: npm run build
 
-      - name: Run Cypress tests (E2E headless)
+  cypress-run:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2] # 2 parallel containers
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress tests (parallel + record)
         uses: cypress-io/github-action@v6
         with:
           start: npm run dev
-          wait-on: http://localhost:3000
+          wait-on: 'http://localhost:3000'
           wait-on-timeout: 60
-          browser: chrome
+          record: true
+          parallel: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
