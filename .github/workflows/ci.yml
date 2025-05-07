@@ -1,4 +1,4 @@
-name: CI/CD with Cypress
+name: CI with Cypress (dev mode)
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  cypress-tests:
+  cypress-dev-test:
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
@@ -22,8 +22,6 @@ jobs:
       STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
       NODE_ENV: development
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -32,19 +30,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js app
-        run: npm run build
-
-      - name: Start app and run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm run start
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 60
-          record: true
-          parallel: false
+      - name: Run Cypress tests (dev mode)
+        run: |
+          npm run dev &
+          npx wait-on http://localhost:3000
+          npx cypress run --headless --browser chrome
