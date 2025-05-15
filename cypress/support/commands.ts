@@ -11,7 +11,7 @@ declare global {
 }
 
 Cypress.Commands.add('login', (email: string, password: string) => {
-  cy.visit(`${Cypress.env("baseUrl")}/sign-in`);
+  cy.visit(`/sign-in`);
   cy.get("#identifier-field").should('be.visible').type(email);
   cy.get(".cl-formButtonPrimary").should('be.enabled').click();
 
@@ -22,14 +22,14 @@ Cypress.Commands.add('login', (email: string, password: string) => {
 });
 
 Cypress.Commands.add('uploadFile', (filePath: string, mimeType: string) => {
-  cy.visit(`${Cypress.env("baseUrl")}/upload`);
+  cy.visit(`/upload`);
   cy.get('#file').attachFile({
     filePath,
     mimeType,
   });
 
   cy.get('[cy-data="upload-submit"]').click();
-  cy.url({ timeout: 30000 }).should('match', new RegExp(`${Cypress.env("baseUrl")}/summaries`));
+  cy.url({ timeout: 30000 }).should('match', new RegExp(`/summaries`));
   cy.contains(`Fonte: ${filePath.split('/').pop()}`).should('be.visible');
 });
 
