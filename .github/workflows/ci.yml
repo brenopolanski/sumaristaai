@@ -22,6 +22,8 @@ jobs:
       STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
       NODE_ENV: development
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      CYPRESS_baseUrl: http://localhost:3000
+      CYPRESS_userTest: ${{ secrets.CYPRESS_userTest }}
 
     steps:
       - name: Checkout repository

@@ -1,37 +1,36 @@
 /// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+import 'cypress-file-upload';
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      login(email: string, password: string): Chainable<void>;
+      uploadFile(filePath: string, mimeType: string): Chainable<void>;
+    }
+  }
+}
+
+Cypress.Commands.add('login', (email: string, password: string) => {
+  cy.visit(`${Cypress.env("baseUrl")}/sign-in`);
+  cy.get("#identifier-field").should('be.visible').type(email);
+  cy.get(".cl-formButtonPrimary").should('be.enabled').click();
+
+  cy.get("#password-field", { timeout: 10000 }).should('be.visible').type(password);
+  cy.get(".cl-formButtonPrimary").should('be.enabled').click();
+
+  cy.url({ timeout: 10000 }).should("include", "/");
+});
+
+Cypress.Commands.add('uploadFile', (filePath: string, mimeType: string) => {
+  cy.visit(`${Cypress.env("baseUrl")}/upload`);
+  cy.get('#file').attachFile({
+    filePath,
+    mimeType,
+  });
+
+  cy.get('[cy-data="upload-submit"]').click();
+  cy.url({ timeout: 30000 }).should('match', new RegExp(`${Cypress.env("baseUrl")}/summaries`));
+  cy.contains(`Fonte: ${filePath.split('/').pop()}`).should('be.visible');
+});
+
+export {};
