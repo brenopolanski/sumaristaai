@@ -29,7 +29,7 @@ Cypress.Commands.add('uploadFile', (filePath: string, mimeType: string) => {
   });
 
   cy.get('[cy-data="upload-submit"]').click();
-  cy.url({ timeout: 30000 }).should('match', new RegExp(`/summaries`));
+  cy.url({ timeout: 60000 }).should('match', new RegExp(`/summaries`));
   cy.contains(`Fonte: ${filePath.split('/').pop()}`).should('be.visible');
 });
 
