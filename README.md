@@ -19,7 +19,6 @@ O **SumaristaAI** é uma solução inovadora que utiliza inteligência artificia
 - ✅ Processamento rápido de PDFs
 - ✅ Sumários precisos gerados por IA
 - ✅ Interface intuitiva (drag and drop)
-- ✅ Suporte para múltiplos idiomas
 - ✅ Opção de download dos resultados
 - ✅ Histórico de sumários gerados
 
