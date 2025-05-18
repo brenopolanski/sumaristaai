@@ -24,6 +24,7 @@ jobs:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       CYPRESS_baseUrl: http://localhost:3000
       CYPRESS_userTest: ${{ secrets.CYPRESS_userTest }}
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
 
     steps:
       - name: Checkout repository
@@ -41,4 +42,9 @@ jobs:
         run: |
           npm run dev &
           npx wait-on http://localhost:3000
+
+          # Reset user test data before running tests
+          curl -X GET "http://localhost:3000/api/tests" \
+            -H "Authorization: Bearer $CRON_SECRET"
+
           npx cypress run --headless --browser chrome
