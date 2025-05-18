@@ -9,7 +9,6 @@ describe("Fazendo o upload de um pdf", () => {
   });
 
   it("Verifica se o card do sumário está visível", () => {
-    cy.uploadFile("test.pdf", "application/pdf");
     cy.viewSummaries();
   });
 });
