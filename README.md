@@ -1,36 +1,103 @@
 ![Cypress CI](https://github.com/matheusmartinsviana/sumaristaai/actions/workflows/ci.yml/badge.svg)
-
-<div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+![GitHub last commit](https://img.shields.io/github/last-commit/matheusmartinsviana/sumaristaai)
+![GitHub repo size](https://img.shields.io/github/repo-size/matheusmartinsviana/sumaristaai)
+![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=sumaristaai)
+  
+<div align="center">
   <img src="https://sumaristaai.vercel.app/SumaristaAI-logo.webp" alt="SumaristaAI Logo" width="200" height="200" />
-  <!-- <img src="https://github.com/matheusmartinsviana/sumaristaai/actions/workflows/ci.yml/badge.svg" alt="CI/CD Status" /> -->
-  <h2>⚡ Gere Sumários Poderosos com seus PDFs</h2>
+  <h1>⚡ SumaristaAI</h1>
+  <h3>Gere Sumários Poderosos com seus PDFs</h3>
   <p><strong>Faça um sumário de qualquer PDF em segundos</strong></p>
-  <p>Com o <strong>SumaristaAI</strong>, criar sumários nunca foi tão fácil.</p>
 </div>
+
+## 📌 Visão Geral
+
+O **SumaristaAI** é uma solução inovadora que utiliza inteligência artificial para transformar documentos PDF em sumários concisos e de alta qualidade em questão de segundos.
+
+## ✨ Funcionalidades
+
+- ✅ Processamento rápido de PDFs
+- ✅ Sumários precisos gerados por IA
+- ✅ Interface intuitiva (drag and drop)
+- ✅ Opção de download dos resultados
+- ✅ Histórico de sumários gerados
 
 ## 🚀 Como funciona?
 
-O **SumaristaAI** é uma ferramenta que permite criar sumários em apenas 3 passos:
+1. **Envie o seu PDF**  
+   Arraste e solte ou clique para enviar seu arquivo
 
-### 1. Envie o seu PDF
+2. **Análise com IA**  
+   Nossa tecnologia processa o conteúdo e extrai os pontos-chave
 
-Apenas arraste e solte ou clique para enviar seu PDF para o SumaristaAI.
+3. **Obtenha seu sumário**  
+   Receba um resumo claro e objetivo em segundos
 
-### 2. Análise com IA
+## 🛠️ Tecnologias Utilizadas
 
-Nosso sistema de inteligência artificial irá analisar seu PDF e criar um sumário detalhado em segundos.
+### Frontend
+- **Next.js** - Framework React
+- **Shadcn/ui** - Componentes UI
+- **Tailwind CSS** - Estilização
+- **Zod** - Validação de dados
+- **Clerk** - Autenticação
 
-### 3. Baixe/veja o seu sumário
+### Backend
+- **Gemini/OpenAI** - Processamento de linguagem natural
+- **NeonDB** - Banco de dados PostgreSQL
+- **UploadThing** - Gerenciamento de arquivos
 
-Receba um sumário claro, objetivo e direto ao ponto com base no seu conteúdo.
+### DevOps
+- **GitHub Actions** - CI/CD
+- **Vercel** - Hospedagem
 
-## 🔗 Links úteis (Usados no projetos)
+## 📦 Instalação
 
-- NeonDB: https://console.neon.tech/
-- UploadThing: https://uploadthing.com/dashboard
-- Clerk: https://dashboard.clerk.com/
-- Stripe: https://dashboard.stripe.com/dashboard
-- Gemini: https://ai.google.dev/gemini-api/docs/pricing?hl=pt-br
-- OpenAI: https://platform.openai.com/docs/concepts
-- Shadcn: https://ui.shadcn.com/docs/components
-- Zod: https://zod.dev/
+1. Clone o repositório:
+```bash
+git clone https://github.com/matheusmartinsviana/sumaristaai.git
+```
+2. Instale as dependências:
+```bash
+npm install
+```
+3. Configure as variáveis de ambiente (crie um arquivo .env baseado no .env.example):
+```bash
+touch .env
+```
+4. Inicie o servidor de desenvolvimento:
+```bash
+npm run dev
+```
+
+## 🤝 Como Contribuir
+
+1. Faça um fork do projeto
+2. Crie uma branch:
+```bash
+git checkout -b feature/AmazingFeature
+```
+3. Commit suas mudanças:
+```bash
+git commit -m 'Add some AmazingFeature'
+```
+4. Push para a branch:
+```bash
+git push origin feature/AmazingFeature
+```
+5. Abra um Pull Request
+
+## 📄 Licença
+
+**SumaristaAI** é distribuído sob a licença [MIT](https://opensource.org/licenses/MIT).
+
+---
+
+<div align="center">
+  <p>✨ <strong>SumaristaAI</strong> - Transformando PDFs em conhecimento desde 2025</p>
+  <p>
+    <a href="https://github.com/matheusmartinsviana">GitHub</a> | 
+    <a href="https://linkedin.com/in/matheusmartinsviana">LinkedIn</a> | 
+    <a href="https://sumaristaai.vercel.app">Site Oficial</a>
+  </p>
+</div>
