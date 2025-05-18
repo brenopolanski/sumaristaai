@@ -1,8 +1,9 @@
+![Cypress CI](https://github.com/matheusmartinsviana/sumaristaai/actions/workflows/ci.yml/badge.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/matheusmartinsviana/sumaristaai)
+![GitHub repo size](https://img.shields.io/github/repo-size/matheusmartinsviana/sumaristaai)
+![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=sumaristaai)
+  
 <div align="center">
-  ![Cypress CI](https://github.com/matheusmartinsviana/sumaristaai/actions/workflows/ci.yml/badge.svg)
-  ![GitHub last commit](https://img.shields.io/github/last-commit/matheusmartinsviana/sumaristaai)
-  ![GitHub repo size](https://img.shields.io/github/repo-size/matheusmartinsviana/sumaristaai)
-  ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=sumaristaai)
   <img src="https://sumaristaai.vercel.app/SumaristaAI-logo.webp" alt="SumaristaAI Logo" width="200" height="200" />
   <h1>⚡ SumaristaAI</h1>
   <h3>Gere Sumários Poderosos com seus PDFs</h3>
