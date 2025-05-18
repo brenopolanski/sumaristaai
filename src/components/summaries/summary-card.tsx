@@ -37,10 +37,10 @@ export default function SummaryCard({ summary }: { summary: any }) {
             className="relative h-full">
             <Card className="relative h-full">
                 <div className="absolute top-2 right-2">
-                    <DeleteButton summaryId={summary.id} />
+                    <DeleteButton  summaryId={summary.id} />
                 </div>
-                <Link href={`/summaries/${summary.id}`} className="block p-4 sm:p-6">
-                    <div className="flex flex-col gap-3 sm:gap-4">
+                <Link cy-data="link-to-summary" href={`/summaries/${summary.id}`} className="block p-4 sm:p-6">
+                    <div cy-data="summary-card-content" className="flex flex-col gap-3 sm:gap-4">
                         <SummaryHeader fileUrl={summary.original_file_url} title={summary.title} createdAt={summary.created_at} />
                         <p className="text-sm text-gray-600 line-clamp-2 sm:text-base pl-2">{summary.summary_text}</p>
                         <div className="flex justify-between items-center mt-2 sm:mt-4">

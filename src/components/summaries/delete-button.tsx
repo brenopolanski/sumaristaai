@@ -40,6 +40,7 @@ export default function DeleteButton({ summaryId }: DeleteButtonProps) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
+                    cy-data="delete-button"
                     variant="ghost"
                     size="icon"
                     className="text-gray-400 bg-gray-50 border border-gray-200 hover:text-blue-600 hover:bg-blue-50"
