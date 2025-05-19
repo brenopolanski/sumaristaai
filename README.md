@@ -1,4 +1,4 @@
-![Cypress CI](https://github.com/matheusmartinsviana/sumaristaai/actions/workflows/ci.yml/badge.svg)
+![Cypress CI](https://github.com/matheusmartinsviana/sumaristaai/actions/workflows/cypress-tests.yml/badge.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/matheusmartinsviana/sumaristaai)
 ![GitHub repo size](https://img.shields.io/github/repo-size/matheusmartinsviana/sumaristaai)
 ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=sumaristaai)
