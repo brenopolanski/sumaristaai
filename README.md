@@ -12,13 +12,15 @@
 
 ## 📌 Visão Geral
 
-O **SumaristaAI** é uma solução inovadora que utiliza inteligência artificial para transformar documentos PDF em sumários concisos e de alta qualidade em questão de segundos.
+**SumaristaAI** é uma ferramenta que usa inteligência artificial para gerar resumos rápidos e precisos de arquivos PDF.
+
+Você só precisa enviar o PDF — sem se preocupar com comandos, *prompts* ou configurações. O resumo é gerado automaticamente em segundos.
 
 ## ✨ Funcionalidades
 
 - ✅ Processamento rápido de PDFs
 - ✅ Sumários precisos gerados por IA
-- ✅ Interface intuitiva (drag and drop)
+- ✅ Interface intuitiva
 - ✅ Opção de download dos resultados
 - ✅ Histórico de sumários gerados
 
@@ -61,7 +63,7 @@ git clone https://github.com/matheusmartinsviana/sumaristaai.git
 ```bash
 npm install
 ```
-3. Configure as variáveis de ambiente (crie um arquivo .env baseado no .env.example):
+3. Configure as variáveis de ambiente (crie um arquivo .env baseado no [.env.example](https://github.com/matheusmartinsviana/sumaristaai/.env.example)):
 ```bash
 touch .env
 ```
