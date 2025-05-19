@@ -63,7 +63,7 @@ git clone https://github.com/matheusmartinsviana/sumaristaai.git
 ```bash
 npm install
 ```
-3. Configure as variáveis de ambiente (crie um arquivo .env baseado no [.env.example](https://github.com/matheusmartinsviana/sumaristaai/.env.example)):
+3. Configure as variáveis de ambiente (crie um arquivo .env baseado no [.env.example](https://github.com/matheusmartinsviana/sumaristaai/blob/main/.env.example)):
 ```bash
 touch .env
 ```
