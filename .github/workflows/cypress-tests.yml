@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: CI with Cypress (dev mode)
 
 on:
   push:
@@ -9,8 +9,7 @@ on:
       - main
 
 jobs:
-  cypress-cloud:
-    name: Cypress Cloud Run
+  cypress-dev-test:
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
@@ -25,45 +24,9 @@ jobs:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       CYPRESS_baseUrl: http://localhost:3000
       CYPRESS_userTest: ${{ secrets.CYPRESS_userTest }}
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Cypress run (cloud)
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm start
-          wait-on: "http://localhost:3000"
-          record: true
-          # parallel: false (default)
-
-  cypress-dev:
-    name: Cypress Dev Mode Run
-    runs-on: ubuntu-latest
-    env:
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-      UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-      STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
-      NODE_ENV: development
-      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      CYPRESS_baseUrl: http://localhost:3000
-      CYPRESS_userTest: ${{ secrets.CYPRESS_userTest }}
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      GITHUB_TOKEN: ${{ secrets.CYPRESS_GITHUB_TOKEN }}
-
-    steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
