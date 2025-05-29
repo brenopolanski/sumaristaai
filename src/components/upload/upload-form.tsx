@@ -62,7 +62,9 @@ export default function UploadForm() {
             // Validar o arquivo
             const validatedFields = schema.safeParse({ file });
             if (!validatedFields.success) {
-                toast.error("Algo deu errado!");
+                const errorMessage =
+                    validatedFields.error.errors?.[0]?.message || "Algo deu errado!";
+                toast.error(errorMessage);
                 setIsLoading(false);
                 return;
             }
